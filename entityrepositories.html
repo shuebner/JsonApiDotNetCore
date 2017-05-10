@@ -152,8 +152,11 @@
 <a href="https://github.com/Research-Institute/json-api-dotnet-core/blob/master/src/JsonApiDotNetCore/Data/IEntityRepository.cs">IEntityRepository&lt;Entity, TId&gt;</a>. If you only need minor changes you can override the
 methods defined in <a href="https://github.com/Research-Institute/json-api-dotnet-core/blob/master/src/JsonApiDotNetCore/Data/DefaultEntityRepository.cs">DefaultEntityRepository&lt;TEntity, TId&gt;</a>. </p>
 <p>The repository should then be
-add to the service collection in <code>Startup.ConfigureServices</code> like so:</p>
-<pre><code class="language-csharp">services.AddScoped&lt;IEntityRepository&lt;MyEntity,Guid&gt;, MyAuthorizedEntityRepository&gt;();</code></pre>
+add to the service collection in <code>Startup.cs</code> like so:</p>
+<pre><code class="language-csharp">public IServiceProvider ConfigureServices(IServiceCollection services) {
+    services.AddScoped&lt;IEntityRepository&lt;MyEntity,Guid&gt;, MyAuthorizedEntityRepository&gt;();
+    // ...
+}</code></pre>
 <p>A sample implementation that performs data authorization might look like:</p>
 <pre><code class="language-csharp">public class MyAuthorizedEntityRepository : DefaultEntityRepository&lt;MyEntity&gt;
 {

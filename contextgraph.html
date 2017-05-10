@@ -170,12 +170,16 @@ public void ConfigureServices(IServiceCollection services)
 }</code></pre>
 <h3 id="changing-resource-names">Changing Resource Names</h3>
 <p>If a DbContext is specified when adding the services, the context will be used to define the resources and their names. By default, these names will be hyphenated.</p>
-<pre><code class="language-csharp">// this will be translated into "my-models"
-public DbSet&lt;MyModel&gt; MyModels { get; set; }</code></pre>
+<pre><code class="language-csharp">public class AppDbContext : DbContext {
+    // this will be translated into "my-models"
+    public DbSet&lt;MyModel&gt; MyModels { get; set; }
+}</code></pre>
 <p>However, you can specify a custom name like so:</p>
-<pre><code class="language-csharp">// this will be translated into "someModels"
-[Resource("someModels")]
-public DbSet&lt;MyModel&gt; MyModels { get; set; }</code></pre>
+<pre><code class="language-csharp">public class AppDbContext : DbContext {
+    // this will be translated into "someModels"
+    [Resource("someModels")]
+    public DbSet&lt;MyModel&gt; MyModels { get; set; }
+}</code></pre>
                 </section>
 
             </div>

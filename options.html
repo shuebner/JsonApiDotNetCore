@@ -152,23 +152,29 @@
 <p>By default, the server will respond with a <code>403 Forbidden</code> HTTP Status Code if a <code>POST</code> request is
 received with a client generated id. However, this can be allowed by setting the <code>AllowClientGeneratedIds</code>
 flag in the options:</p>
-<pre><code class="language-csharp">services.AddJsonApi&lt;AppDbContext&gt;(opt =&gt;
-{
-    opt.AllowClientGeneratedIds = true;
-    // ..
-});</code></pre>
+<pre><code class="language-csharp">public IServiceProvider ConfigureServices(IServiceCollection services) {
+    services.AddJsonApi&lt;AppDbContext&gt;(
+        opt =&gt; opt.AllowClientGeneratedIds = true);
+    // ...
+}</code></pre>
 <h2 id="pagination">Pagination</h2>
 <p>If you would like pagination implemented by default, you can specify the page size
 when setting up the services:</p>
-<pre><code class="language-csharp"> services.AddJsonApi&lt;AppDbContext&gt;(
-     opt =&gt; opt.DefaultPageSize = 10);</code></pre>
+<pre><code class="language-csharp">public IServiceProvider ConfigureServices(IServiceCollection services) {
+    services.AddJsonApi&lt;AppDbContext&gt;(
+        opt =&gt; opt.DefaultPageSize = 10);
+    // ...
+}</code></pre>
 <h3 id="total-record-count">Total Record Count</h3>
 <p>The total number of records can be added to the document meta by setting it in the options:</p>
-<pre><code class="language-csharp">services.AddJsonApi&lt;AppDbContext&gt;(opt =&gt;
-{
-    opt.DefaultPageSize = 5;
-    opt.IncludeTotalRecordCount = true;
-});</code></pre>
+<pre><code class="language-csharp">public IServiceProvider ConfigureServices(IServiceCollection services) {
+    services.AddJsonApi&lt;AppDbContext&gt;(opt =&gt;
+    {
+        opt.DefaultPageSize = 5;
+        opt.IncludeTotalRecordCount = true;
+    });
+    // ...
+}</code></pre>
                 </section>
 
             </div>

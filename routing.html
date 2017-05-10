@@ -150,20 +150,21 @@
                     <h1 id="routing">Routing</h1>
 <p>By default the library will configure routes for each controller.
 Based on the <a href="http://jsonapi.org/recommendations/">recommendations</a>
-outlined in the JSONAPI spec, routes are hyphenated. For example:</p>
-<pre><code>/todo-items --&gt; TodoItemsController
-NOT /todoItems</code></pre>
+outlined in the JSONAPI spec, routes are hyphenated.</p>
+<pre><code class="language-http">GET /api/compound-models HTTP/1.1
+Accept: application/vnd.api+json</code></pre>
 <h2 id="namespacing-and-versioning-urls">Namespacing and Versioning URLs</h2>
 <p>You can add a namespace to the URL by specifying it in <code>ConfigureServices</code>:</p>
-<pre><code class="language-csharp">services.AddJsonApi&lt;AppDbContext&gt;(
-    opt =&gt; opt.Namespace = "api/v1");</code></pre>
+<pre><code class="language-csharp">public IServiceProvider ConfigureServices(IServiceCollection services) {
+    services.AddJsonApi&lt;AppDbContext&gt;(
+        opt =&gt; opt.Namespace = "api/v1");
+}</code></pre>
 <h2 id="disable-convention">Disable Convention</h2>
 <p>You can disable the dasherized convention and specify your own template
 by using the <code>DisableRoutingConvention</code> Attribute. </p>
 <pre><code class="language-csharp">[Route("[controller]")]
 [DisableRoutingConvention]
-public class CamelCasedModelsController : JsonApiController&lt;CamelCasedModel&gt;
-{
+public class CamelCasedModelsController : JsonApiController&lt;CamelCasedModel&gt; {
     public CamelCasedModelsController(
         IJsonApiContext jsonApiContext,
         IResourceService&lt;CamelCasedModel&gt; resourceService,
@@ -174,14 +175,20 @@ public class CamelCasedModelsController : JsonApiController&lt;CamelCasedModel&g
 <p>It is important to note that your routes <em>must</em> still end with the model name in the same format
 as the resource name. This is so that we can build accurrate resource links in the json:api document.
 For example, if you define a resource as <code>MyModels</code> the controller route must match:</p>
-<pre><code class="language-csharp">// resource definition
-builder.AddResource&lt;TodoItem&gt;("myModels");
+<pre><code class="language-csharp">public IServiceProvider ConfigureServices(IServiceCollection services) {
+    services.AddJsonApi(options =&gt; {
+        options.BuildContextGraph((builder) =&gt; {
+            // resource definition
+            builder.AddResource&lt;TodoItem&gt;("myModels");
+        });
+    });
+}
 
 // controller definition
 [Route("api/myModels")]
 [DisableRoutingConvention]
-public class TodoItemsController : JsonApiController&lt;TodoItem&gt;
-{ //...
+public class TodoItemsController : JsonApiController&lt;TodoItem&gt; { 
+    //...
 }</code></pre>
                 </section>
 
