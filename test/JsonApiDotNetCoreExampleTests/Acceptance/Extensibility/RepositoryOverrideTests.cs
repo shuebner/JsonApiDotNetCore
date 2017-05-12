@@ -10,18 +10,16 @@ using JsonApiDotNetCoreExample.Models;
 using JsonApiDotNetCoreExampleTests.Services;
 using JsonApiDotNetCore.Serialization;
 using JsonApiDotNetCore.Services;
-using DotNetCoreDocs;
 using JsonApiDotNetCoreExample;
-using DotNetCoreDocs.Writers;
 
 namespace JsonApiDotNetCoreExampleTests.Acceptance.Extensibility
 {
     [Collection("WebHostCollection")]
     public class RepositoryOverrideTests
     {
-        private DocsFixture<Startup, JsonDocWriter> _fixture;
+        private TestFixture<Startup> _fixture;
 
-        public RepositoryOverrideTests(DocsFixture<Startup, JsonDocWriter> fixture)
+        public RepositoryOverrideTests(TestFixture<Startup> fixture)
         {
             _fixture = fixture;
         }

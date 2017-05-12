@@ -3,8 +3,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Bogus;
-using DotNetCoreDocs;
-using DotNetCoreDocs.Writers;
 using JsonApiDotNetCore.Serialization;
 using JsonApiDotNetCore.Services;
 using JsonApiDotNetCoreExample;
@@ -25,11 +23,11 @@ namespace JsonApiDotNetCoreExampleTests.Acceptance.Spec
     [Collection("WebHostCollection")]
     public class CreatingDataTests
     {
-        private DocsFixture<Startup, JsonDocWriter> _fixture;
+        private TestFixture<Startup> _fixture;
         private IJsonApiContext _jsonApiContext;
         private Faker<TodoItem> _todoItemFaker;
 
-        public CreatingDataTests(DocsFixture<Startup, JsonDocWriter> fixture)
+        public CreatingDataTests(TestFixture<Startup> fixture)
         {
             _fixture = fixture;
             _jsonApiContext = fixture.GetService<IJsonApiContext>();

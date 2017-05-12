@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DotNetCoreDocs;
-using DotNetCoreDocs.Writers;
 using JsonApiDotNetCoreExample;
 using Xunit;
 using Microsoft.EntityFrameworkCore;
@@ -23,10 +21,10 @@ namespace JsonApiDotNetCoreExampleTests.Acceptance.Spec
     [Collection("WebHostCollection")]
     public class SparseFieldSetTests
     {
-        private DocsFixture<Startup, JsonDocWriter> _fixture;
+        private TestFixture<Startup> _fixture;
         private readonly AppDbContext _dbContext;
 
-        public SparseFieldSetTests(DocsFixture<Startup, JsonDocWriter> fixture)
+        public SparseFieldSetTests(TestFixture<Startup> fixture)
         {
             _fixture = fixture;
             _dbContext = fixture.GetService<AppDbContext>();

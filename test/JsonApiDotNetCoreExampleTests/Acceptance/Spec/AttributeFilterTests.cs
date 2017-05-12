@@ -1,8 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using DotNetCoreDocs;
-using DotNetCoreDocs.Writers;
 using JsonApiDotNetCoreExample;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
@@ -21,11 +19,11 @@ namespace JsonApiDotNetCoreExampleTests.Acceptance.Spec
     [Collection("WebHostCollection")]
     public class AttributeFilterTests
     {
-        private DocsFixture<Startup, JsonDocWriter> _fixture;
+        private TestFixture<Startup> _fixture;
         private Faker<TodoItem> _todoItemFaker;
         private readonly Faker<Person> _personFaker;
 
-        public AttributeFilterTests(DocsFixture<Startup, JsonDocWriter> fixture)
+        public AttributeFilterTests(TestFixture<Startup> fixture)
         {
             _fixture = fixture;
             _todoItemFaker = new Faker<TodoItem>()
