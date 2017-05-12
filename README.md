@@ -1,3 +1,10 @@
+# This is the test branch for .Net Core 2.0.0
+
+Current Status:
+
+- Depends on netcoreapp2.0 (will change when the AspNetCore packages target netstandard)
+- [Can't run acceptance tests](https://github.com/npgsql/Npgsql.EntityFrameworkCore.PostgreSQL/issues/171)
+
 # JSON API .Net Core
 
 [![Build status](https://ci.appveyor.com/api/projects/status/9fvgeoxdikwkom10?svg=true)](https://ci.appveyor.com/project/jaredcnance/json-api-dotnet-core)
