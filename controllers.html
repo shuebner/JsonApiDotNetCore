@@ -181,6 +181,16 @@ and service generic type definitions:</p>
 <li><code>NoHttpDelete</code>: disallow DELETE requests</li>
 <li><code>HttpReadOnly</code>: all of the above</li>
 </ul>
+<pre><code class="language-csharp">[HttpReadOnly]
+public class ThingsController : JsonApiController&lt;Thing&gt;
+{
+    public ThingsController(
+        IJsonApiContext jsonApiContext,
+        IResourceService&lt;Thing&gt; resourceService,
+        ILoggerFactory loggerFactory) 
+    : base(jsonApiContext, resourceService, loggerFactory)
+    { }
+}</code></pre>
 <h3 id="additional-customizations">Additional customizations</h3>
 <p>If you need additional customization at the controller level, you can override the virtual
 methods. Please be aware that this is not the place for advanced business logic
