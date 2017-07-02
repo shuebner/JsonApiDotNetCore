@@ -209,6 +209,39 @@ public class MyModelService : IResourceService&lt;MyModel&gt;
         return await _dal.GetModelAsync();
     }
 }</code></pre>
+<h3 id="limited-requirements">Limited Requirements</h3>
+<p>In some cases it may be necessary to only expose a few methods on the resource.
+For this reason, we have created a hierarchy of service interfaces that can be used to get the
+exact implementation you require. Below is a table outlining these interfaces:</p>
+<p><img src="service_table.png" alt="interfaces" /></p>
+<p>In order to take advantage of these interfaces you first need to inject the service for each implemented interface.
+Using Autofac, as an example, this is simply:</p>
+<pre><code class="language-csharp">public class MyResourceService : ICreateService&lt;MyResource&gt;, IDeleteService&lt;MyResource&gt; {
+   // ...
+}</code></pre>
+<pre><code class="language-csharp">public class Startup {
+  public IServiceProvider ConfigureServices(IServiceCollection services) {
+    builder.RegisterType&lt;MyResourceService&gt;().AsImplementedInterfaces();
+  }
+}</code></pre>
+<p>Then in the controller, you should inherit the base controller and pass the services into
+the named, optional base parameters:</p>
+<pre><code class="language-csharp">public class MyResourcesController : BaseJsonApiController&lt;MyResource&gt; {
+
+    public MyResourcesController(
+        IJsonApiContext jsonApiContext, 
+        ICreateService&lt;MyResource&gt; create,
+        IDeleteService&lt;MyResource&gt; delete
+    ) : base(jsonApiContext, create: create, delete: delete) { }
+
+    [HttpPost]
+    public override async Task&lt;IActionResult&gt; PostAsync([FromBody] MyResource entity) 
+        =&gt; await base.PostAsync(entity);
+
+    [HttpDelete("{id}")]
+    public override async Task&lt;IActionResult&gt;DeleteAsync(int id) 
+        =&gt; await base.DeleteAsync(id);
+}</code></pre>
                 </section>
 
             </div>

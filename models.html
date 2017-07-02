@@ -179,6 +179,14 @@ add the <code>AttrAttribute</code> and provide the outbound name.</p>
     [Attr("first-name")]
     public string FirstName { get; set; }
 }</code></pre>
+<h3 id="immutability">Immutability</h3>
+<p>Attributes can be marked as immutable which will prevent <code>PATCH</code> requests
+from updating them:</p>
+<pre><code class="language-csharp">public class Person : Identifiable&lt;int&gt;
+{
+    [Attr("first-name", immutable: true)]
+    public string FirstName { get; set; }
+}</code></pre>
 <h2 id="relationships">Relationships</h2>
 <p>In order for navigation properties to be identified in the model,
 they should be labeled with the appropriate attribute (either <code>HasOne</code> or <code>HasMany</code>).</p>
