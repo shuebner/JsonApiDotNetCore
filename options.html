@@ -180,6 +180,30 @@ when setting up the services:</p>
     });
     // ...
 }</code></pre>
+<h2 id="relative-links">Relative Links</h2>
+<p>All links are absolute by default. However, you can configure relative links:</p>
+<pre><code class="language-csharp">public IServiceProvider ConfigureServices(IServiceCollection services) {
+    services.AddJsonApi&lt;AppDbContext&gt;(
+        opt =&gt; opt.RelativeLinks = true);
+    // ...
+}</code></pre>
+<pre><code class="language-http">GET /api/v1/articles/4309 HTTP/1.1
+Accept: application/vnd.api+json</code></pre>
+<pre><code class="language-json">{
+    "type": "articles",
+    "id": "4309",
+    "attributes": {
+        "name": "Voluptas iure est molestias."
+    },
+    "relationships": {
+        "author": {
+            "links": {
+                "self": "/api/v1/articles/4309/relationships/author",
+                "related": "/api/v1/articles/4309/author"
+            }
+        }
+    }
+}</code></pre>
                 </section>
 
             </div>
