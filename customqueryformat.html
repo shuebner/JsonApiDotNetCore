@@ -146,145 +146,21 @@
                                             Middleware
                                         </a>
                                     </li>
+                                                                    <li class="active">
+                                        <a href="https://json-api-dotnet.github.io/JsonApiDotNetCore/customqueryformat.html">
+                                            Custom Query Formats
+                                        </a>
+                                    </li>
                                                             </ul>
                         
                     </nav>
 
                 
                 <section class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
-                    <h1 id="querying-data">Querying Data</h1>
-<h3 id="pagination">Pagination</h3>
-<p>Resources can be paginated.
-The following query would set the page size to 10 and get page 2.</p>
-<pre><code>?page[size]=10&amp;page[number]=2</code></pre>
-<p>If you would like pagination implemented by default, you can specify the page size
-when setting up the services:</p>
-<pre><code class="language-csharp"> services.AddJsonApi&lt;AppDbContext&gt;(
-     opt =&gt; opt.DefaultPageSize = 10);</code></pre>
-<p><strong>Total Record Count</strong></p>
-<p>The total number of records can be added to the document meta by setting it in the options:</p>
-<pre><code class="language-csharp">services.AddJsonApi&lt;AppDbContext&gt;(opt =&gt;
-{
-    opt.DefaultPageSize = 5;
-    opt.IncludeTotalRecordCount = true;
-});</code></pre>
-<h3 id="filtering">Filtering</h3>
-<p>You can filter resources by attributes using the <code>filter</code> query parameter.
-By default, all attributes are filterable.
-The filtering strategy we have selected, uses the following form:</p>
-<pre><code>?filter[attribute]=value</code></pre>
-<p>For operations other than equality, the query can be prefixed with an operation
-identifier):</p>
-<pre><code>?filter[attribute]=eq:value
-?filter[attribute]=lt:value
-?filter[attribute]=gt:value
-?filter[attribute]=le:value
-?filter[attribute]=ge:value
-?filter[attribute]=like:value</code></pre>
-<h4 id="custom-filters">Custom Filters</h4>
-<p>You can customize the filter implementation by overriding the method in the <code>DefaultEntityRepository</code> like so:</p>
-<pre><code class="language-csharp">public class MyEntityRepository : DefaultEntityRepository&lt;MyEntity&gt;
-{
-    public MyEntityRepository(
-        AppDbContext context,
-        ILoggerFactory loggerFactory,
-        IJsonApiContext jsonApiContext)
-    : base(context, loggerFactory, jsonApiContext)
-    { }
-
-    public override IQueryable&lt;TEntity&gt; Filter(IQueryable&lt;TEntity&gt; entities,  FilterQuery filterQuery)
-    {
-        // use the base filtering method    
-        entities = base.Filter(entities, filterQuery);
-
-    // implement custom method
-    return ApplyMyCustomFilter(entities, filterQuery);
-    }
-}</code></pre>
-<h3 id="sorting">Sorting</h3>
-<p>Resources can be sorted by an attribute:</p>
-<pre><code>?sort=attribute // ascending
-?sort=-attribute // descending</code></pre>
-<h3 id="meta">Meta</h3>
-<p>Meta objects can be assigned in two ways:</p>
-<ul>
-<li>Resource meta</li>
-<li>Request Meta</li>
-</ul>
-<p>Resource meta can be defined by implementing <code>IHasMeta</code> on the model class:</p>
-<pre><code class="language-csharp">public class Person : Identifiable&lt;int&gt;, IHasMeta
-{
-    // ...
-
-    public Dictionary&lt;string, object&gt; GetMeta(IJsonApiContext context)
-    {
-        return new Dictionary&lt;string, object&gt; {
-            { "copyright", "Copyright 2015 Example Corp." },
-            { "authors", new string[] { "Jared Nance" } }
-        };
-    }
-}</code></pre>
-<p>Request Meta can be added by injecting a service that implements <code>IRequestMeta</code>.
-In the event of a key collision, the Request Meta will take precendence. </p>
-<h3 id="client-generated-ids">Client Generated Ids</h3>
-<p>By default, the server will respond with a <code>403 Forbidden</code> HTTP Status Code if a <code>POST</code> request is
-received with a client generated id. However, this can be allowed by setting the <code>AllowClientGeneratedIds</code>
-flag in the options:</p>
-<pre><code class="language-csharp">services.AddJsonApi&lt;AppDbContext&gt;(opt =&gt;
-{
-    opt.AllowClientGeneratedIds = true;
-    // ..
-});</code></pre>
-<h3 id="custom-errors">Custom Errors</h3>
-<p>By default, errors will only contain the properties defined by the internal <a href="https://github.com/Research-Institute/json-api-dotnet-core/blob/master/src/JsonApiDotNetCore/Internal/Error.cs">Error</a> class. However, you can create your own by inheriting from <code>Error</code> and either throwing it in a <code>JsonApiException</code> or returning the error from your controller.</p>
-<pre><code class="language-csharp">// custom error definition
-public class CustomError : Error {
-    public CustomError(string status, string title, string detail, string myProp)
-    : base(status, title, detail)
-    {
-        MyCustomProperty = myProp;
-    }
-    public string MyCustomProperty { get; set; }
-}
-
-// throwing a custom error
-public void MyMethod() {
-    var error = new CustomError("507", "title", "detail", "custom");
-    throw new JsonApiException(error);
-}
-
-// returning from controller
-[HttpPost]
-public override async Task&lt;IActionResult&gt; PostAsync([FromBody] MyEntity entity)
-{
-    if(_db.IsFull)
-        return new ObjectResult(new CustomError("507", "Database is full.", "Theres no more room.", "Sorry."));
-
-    // ...
-}</code></pre>
-<h3 id="sparse-fieldsets">Sparse Fieldsets</h3>
-<p>We currently support top-level field selection.
-What this means is you can restrict which fields are returned by a query using the <code>fields</code> query parameter, but this does not yet apply to included relationships.</p>
-<ul>
-<li>
-<p>Currently valid:</p>
-<pre><code class="language-http">GET /articles?fields[articles]=title,body HTTP/1.1
-Accept: application/vnd.api+json</code></pre>
-</li>
-<li>Not yet supported:
-<pre><code class="language-http">GET /articles?include=author&amp;fields[articles]=title,body&amp;fields[people]=name HTTP/1.1
-Accept: application/vnd.api+json</code></pre></li>
-</ul>
-<h2 id="tests">Tests</h2>
-<p>I am using DotNetCoreDocs to generate sample requests and documentation.</p>
-<ol>
-<li>To run the tests, start a postgres server and verify the connection properties define in <code>/test/JsonApiDotNetCoreExampleTests/appsettings.json</code></li>
-<li><code>cd ./test/JsonApiDotNetCoreExampleTests</code></li>
-<li><code>dotnet test</code></li>
-<li><code>cd ./src/JsonApiDotNetCoreExample</code></li>
-<li><code>dotnet run</code></li>
-<li><code>open http://localhost:5000/docs</code></li>
-</ol>
+                    <h1 id="custom-query-formats">Custom Query Formats</h1>
+<p>For information on the default query parameter formats, see the documentation for each query method.</p>
+<p>In order to customize the query formats, you need to implement the <code>IQueryParser</code> interface and inject it like so:</p>
+<pre><code class="language-csharp">services.AddScoped&lt;IQueryParser, FooQueryParser&gt;();</code></pre>
                 </section>
 
             </div>

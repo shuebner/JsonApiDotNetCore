@@ -146,6 +146,11 @@
                                             Middleware
                                         </a>
                                     </li>
+                                                                    <li class="">
+                                        <a href="https://json-api-dotnet.github.io/JsonApiDotNetCore/customqueryformat.html">
+                                            Custom Query Formats
+                                        </a>
+                                    </li>
                                                             </ul>
                         
                     </nav>
@@ -203,6 +208,24 @@ Accept: application/vnd.api+json</code></pre>
             }
         }
     }
+}</code></pre>
+<h2 id="custom-query-parameters">Custom Query Parameters</h2>
+<p>If you would like to use custom query params (parameters not reserved by the json:api specification), you can set <code>AllowCustomQueryParameters = true</code>. The default behavior is to return an <code>HTTP 400 Bad Request</code> for unknown query parameters.</p>
+<pre><code class="language-csharp">public IServiceProvider ConfigureServices(IServiceCollection services) {
+    services.AddJsonApi&lt;AppDbContext&gt;(
+        opt =&gt; opt.AllowCustomQueryParameters = true);
+    // ...
+}</code></pre>
+<h2 id="custom-serializer-settings">Custom Serializer Settings</h2>
+<p>We use Json.Net for all serialization needs. If you want to change the default serializer settings, you can:</p>
+<pre><code class="language-csharp">public IServiceProvider ConfigureServices(IServiceCollection services) {
+    services.AddJsonApi&lt;AppDbContext&gt;(
+        opt =&gt; opt.SerializerSettings = new JsonSerializerSettings()
+        {
+            NullValueHandling = NullValueHandling.Ignore,
+            ContractResolver = new DasherizedResolver()
+        });
+    // ...
 }</code></pre>
                 </section>
 
