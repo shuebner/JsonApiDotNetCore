@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\build\dependencies.props" />
   <PropertyGroup>
     <VersionPrefix>2.1.10</VersionPrefix>
-    <TargetFrameworks>netstandard1.6</TargetFrameworks>
+    <TargetFrameworks>$(NetStandardVersion)</TargetFrameworks>
     <AssemblyName>JsonApiDotNetCore</AssemblyName>
     <PackageId>JsonApiDotNetCore</PackageId>
     <PackageTargetFallback>$(PackageTargetFallback);dnxcore50;portable-net45+win8</PackageTargetFallback>
@@ -21,4 +22,5 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="1.1.2" />
     <PackageReference Include="System.ValueTuple" Version="4.3.1" />
   </ItemGroup>
+
 </Project>

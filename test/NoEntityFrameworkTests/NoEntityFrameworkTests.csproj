@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+  <Import Project="..\..\build\dependencies.props" />
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.0</TargetFramework>
+    <TargetFramework>$(NetCoreAppVersion)</TargetFramework>
     <PreserveCompilationContext>true</PreserveCompilationContext>
     <AssemblyName>NoEntityFrameworkTests</AssemblyName>
     <OutputType>Exe</OutputType>
@@ -27,10 +27,10 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0-preview-20170106-08" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0-beta5-build1225" />
-    <PackageReference Include="xunit" Version="2.2.0-beta5-build3474" />
-    <PackageReference Include="Bogus" Version="8.0.1-beta-1" />
+    <PackageReference Include="Bogus" Version="$(BogusVersion)" />
     <PackageReference Include="Microsoft.DotNet.InternalAbstractions" Version="1.0.0" />
-    <PackageReference Include="Moq" Version="4.7.1" />
+    <PackageReference Include="moq" Version="$(MoqVersion)" />
+    <PackageReference Include="xunit" Version="$(xUnitVersion)" />
   </ItemGroup>
 
 </Project>
