@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\..\build\dependencies.props" />
   <PropertyGroup>
-    <VersionPrefix>2.1.10</VersionPrefix>
+    <VersionPrefix>2.1.11</VersionPrefix>
     <TargetFrameworks>$(NetStandardVersion)</TargetFrameworks>
     <AssemblyName>JsonApiDotNetCore</AssemblyName>
     <PackageId>JsonApiDotNetCore</PackageId>
